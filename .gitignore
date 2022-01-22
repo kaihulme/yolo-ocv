@@ -16,7 +16,7 @@
 *.dylib
 *.dll
 
-# Fortran module files
+ Fortran module files
 *.mod
 *.smod
 
@@ -31,5 +31,10 @@
 *.out
 *.app
 
-# Swap
+# Temp
 *.swp
+*/.fuse*
+
+# Config and weight files (for YOLO)
+yolo/yolov3.cfg
+yolo/yolov3.weights
