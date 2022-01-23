@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   app:
-    image: kaihulme/ocv-cpp:latest
+    image: opencv
     stdin_open: true
     tty: true
     working_dir: /yolo-ocv
