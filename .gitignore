@@ -36,6 +36,5 @@
 */.fuse*
 
 # Config and weight files (for YOLO)
-yolo/yolov3.cfg
-yolo/yolov3.weights
->>>>>>> 4332c865af66dcdfe2888f11cb4bf50707249a72
+resources/yolo/yolov3.cfg
+resources/yolo/yolov3.weights
