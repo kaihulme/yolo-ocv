@@ -17,9 +17,8 @@ RUN \
     && apt-get install -y sphinx-common libtbb-dev yasm libfaac-dev \
     && apt-get install -y libopencore-amrnb-dev libopencore-amrwb-dev \ 
     && apt-get install -y libopenexr-dev libgstreamer-plugins-base1.0-dev \
-    && apt-get install -y libavutil-dev libavfilter-dev libavresample-dev< \
+    && apt-get install -y libavutil-dev libavfilter-dev libavresample-dev \
     && apt-get install -y libjasper1 libjasper-dev
-
 
 # Download and extract OpenCV
 RUN \
@@ -33,5 +32,6 @@ RUN \
 RUN \
 	mkdir -p build && cd build \
 	&& cmake -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-4.x/modules ../opencv-4.x \
-	&& cmake --build .
+	&& make -j4 \
+    && make install
 
