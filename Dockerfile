@@ -23,15 +23,14 @@ RUN \
 # Download and extract OpenCV
 RUN \
     cd /opt \
-	wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip \
-	&& wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.x.zip \
-	&& unzip opencv.zip && rm opencv.zip \
-	&& unzip opencv_contrib.zip && rm opencv_contrib.zip
+    wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip \
+    && wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.x.zip \
+    && unzip opencv.zip && rm opencv.zip \
+    && unzip opencv_contrib.zip && rm opencv_contrib.zip
 
 # Build and install OpenCV	
 RUN \
-	mkdir -p build && cd build \
-	&& cmake -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-4.x/modules ../opencv-4.x \
-	&& make -j4 \
+    mkdir -p build && cd build \
+    && cmake -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-4.x/modules ../opencv-4.x \
+    && make -j4 \
     && make install
-
