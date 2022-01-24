@@ -13,7 +13,7 @@ int main(void) {
 
 	// get image as blob
 	Mat blob;
-	Mat img = imread("bird.jpg");
+	Mat img = imread("resources/imgs/bird.jpg");
 	blobFromImage(img, blob, 1/255.0, Size(IN_WIDTH, IN_HEIGHT), Scalar(0, 0, 0), true, false);
 
 	// build network from config & weights and set input
@@ -33,7 +33,7 @@ int main(void) {
 	vector<float> confidences;
 	vector<Rect> boxes;
 	for (Mat output : outputs) {
-		for (int i; i<output.rows; i++) {
+		for (int i=0; i<output.rows; i++) {
 			Mat scores = output.row(i).colRange(5, output.cols);
 			double max_conf;
 			Point max_pos;
@@ -54,26 +54,36 @@ int main(void) {
 	}
 
 	// apply non-maximum supression to boxes
+	vector<int> final_classes;
+	vector<float> final_confidences;
 	vector<Rect> final_boxes;
 	vector<int> box_idxs;
 	NMSBoxes(boxes, confidences, CONF_THR, NMS_THR, box_idxs);
-	for (int idx : box_idxs) final_boxes.push_back(boxes[idx]);
-
-	// get class names from COCO dataset
-	// vector<string> coco_classes;
-	// ifstream coco_file("resources/coco/coco.names");
-	// string line;
-	// while(getline(coco_file, line)) coco_classes.push_back(line);
-
-	// draw predictions on image
-	for (Rect box : final_boxes) {
-		rectangle(img, box, Scalar(0, 255, 0));
-		cout << box << endl;
+	for (int idx : box_idxs) {
+		final_classes.push_back(classes[idx]);
+		final_confidences.push_back(confidences[idx]);
+		final_boxes.push_back(boxes[idx]);
 	}
 
-	imwrite("out/output.jpg", img);
+	// get class names from COCO dataset
+	vector<string> coco_classes;
+	ifstream coco_file("resources/coco/coco.names");
+	string line;
+	while(getline(coco_file, line)) coco_classes.push_back(line);
 
-	cout << final_boxes.size() << endl;
+	// draw predictions on image
+	for (int i=0; i<(int)box_idxs.size(); i++) {
+		rectangle(img, final_boxes[i], Scalar(0, 255, 0));
+		string coco_class = coco_classes[final_classes[i]];
+		float confidence = final_confidences[i];
+		stringstream text;
+		text << fixed << setprecision(2) << coco_class << ": " << confidence*100 << "%";
+		rectangle(img, Point(final_boxes[i].x, final_boxes[i].y + 5), Point(final_boxes[i].x + 100, final_boxes[i].y - 10), Scalar(255, 255, 255), -1);
+		putText(img, text.str(), Point(final_boxes[i].x, final_boxes[i].y), FONT_HERSHEY_COMPLEX, 0.4, Scalar(0,0,0), 1);
+	}
+
+	// output result
+	imwrite("out/output.jpg", img);
 
 	return 0;
 }
