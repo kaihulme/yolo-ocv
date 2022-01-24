@@ -39,5 +39,8 @@
 resources/yolo/yolov3.cfg
 resources/yolo/yolov3.weights
 
-#VSCode
+# VSCode
 .vscode/
+
+# Outputs
+out/
