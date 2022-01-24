@@ -38,3 +38,6 @@
 # Config and weight files (for YOLO)
 resources/yolo/yolov3.cfg
 resources/yolo/yolov3.weights
+
+#VSCode
+.vscode/
