@@ -4,7 +4,7 @@
 #define IMG_HEIGHT 416
 
 #define CONF_THR 0.5 // threshold for detection confidence
-// #define NMS_THR 0.4 // threshold for non-maximum supression
+#define NMS_THR 0.4 // threshold for non-maximum supression
 
 using namespace std;
 using namespace cv;
@@ -40,7 +40,6 @@ int main(void) {
 	vector<Rect> boxes;
 
 	for (Mat output : outputs) {
-
 		for (int i; i<output.rows; i++) {
 
 			Mat scores = output.row(i).colRange(5, output.cols);
@@ -60,12 +59,18 @@ int main(void) {
 				classes.push_back(max_pos.x);
 				confidences.push_back(max_conf);
 				boxes.push_back(box);
-				
+
 			}
 
 		}
-
 	}
+
+	vector<Rect> final_boxes;
+	vector<int> box_idxs;
+	NMSBoxes(boxes, confidences, CONF_THR, NMS_THR, box_idxs);
+	for (int idx : box_idxs) final_boxes.push_back(boxes[idx]);
+
+	
 
 	return 0;
 }
